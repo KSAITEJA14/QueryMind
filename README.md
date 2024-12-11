@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# QueryMind: A Semantic Search Engine for Research Papers
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+QueryMind is a semantic search application designed to retrieve and rank research papers from the Arxiv dataset based on user queries. The system uses **Google Cloud Platform** services like Vertex AI, BigQuery, and Cloud Storage to handle embeddings, metadata, and search efficiently.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Features
+- **Vector Similarity Search**: Uses Vertex AI Matching Engine to find the top-k nearest neighbors in the embedding space.
+- **Metadata Querying**: Fetches detailed metadata (title, abstract, authors, and categories) of the nearest neighbors from BigQuery.
+- **Interactive UI**: Displays the search results with a clean, scrollable design using React.js.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Prerequisites
+1. **Google Cloud Platform**:
+   - Vertex AI for vector similarity search.
+   - BigQuery for metadata storage and querying.
+   - Cloud Storage for embedding storage.
+2. **Local Setup**:
+   - Install [Anaconda](https://www.anaconda.com/) for managing the project environment.
+   - Node.js for running the frontend application.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Setup Guide
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/VSMourya/QueryMind.git
+cd querymind
+```
 
-### `npm run build`
+### 2. Setup Google Cloud Credentials
+Create a file named `creds.py` in the `src` folder and fill it with the following structure (below are dummy values):
+```python
+PROJECT_ID = "querymind"
+REGION = "us-east1"
+DEPLOYED_INDEX_ID = "first_deploy_1733045330981"
+DATASET_ID = "vectordata"
+TABLE_ID = "arxiv-metadata"
+ENDPOINT_ID = "8068788071234561520"
+INDEX_ENDPOINT_NAME = f"projects/{PROJECT_ID}/locations/{REGION}/indexEndpoints/{ENDPOINT_ID}"
+```
+> Replace the above values with your actual **Google Cloud Platform** configurations.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3. Setup Conda Environment
+Create and activate a conda environment named `Querymind`:
+```bash
+conda create --name Querymind python=3.10 -y
+conda activate Querymind
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 4. Install Dependencies
+Install the required Python dependencies using `requirements.txt`:
+```bash
+pip install -r requirements.txt
+```
+Dependencies include:
+- `torch>=2.0.0`
+- `sentence-transformers>=2.2.2`
+- `google-cloud-aiplatform>=1.33.0`
+- `google-cloud-bigquery>=3.11.4`
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 5. Install Frontend Dependencies
+Navigate to the `interactive-search-bar` folder and install frontend dependencies:
+```bash
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 6. Run the Application
+Open **two terminals** and activate the `Querymind` conda environment in both:
+1. **Frontend**: Run the React application:
+   ```bash
+   npm start
+   ```
+   This starts the frontend server at `http://localhost:3000`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Backend**: Run the Flask application:
+   ```bash
+   python3 src/app.py
+   ```
+   The backend server will be available at `http://127.0.0.1:5000`.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Workflow
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Backend Components
+1. **Vector Search**:
+   - Uses Vertex AI Matching Engine to retrieve the nearest neighbors for a query embedding.
+   - Top-k results are returned based on vector similarity.
+2. **Metadata Querying**:
+   - Retrieves metadata (title, abstract, authors, and categories) of nearest neighbors using BigQuery.
 
-### Code Splitting
+### Frontend Features
+- Clean UI design with a **search bar** and **scrollable results display**.
+- Each result contains:
+  - Title of the paper.
+  - Abstract summary (generated by Gemini LLM).
+  - Distance (relevance score).
+- A **Clear** button allows users to reset the results for new searches.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Example Usage
+- **Search**: Input a query such as "Applications of AI in healthcare."
+- **Results**: The app retrieves the most relevant research papers and displays them in the UI.
+- **Clear**: Reset the results for a new query.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## Acknowledgments
+- **Google Cloud Platform** for providing scalable backend services.
+- **Sentence Transformers** for efficient embedding generation.
+- **React.js** for the modern, responsive UI.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+For any issues or feature requests, please create an issue in the GitHub repository. Happy searching!

@@ -35,14 +35,15 @@ else:
 
 model = SentenceTransformer("Alibaba-NLP/gte-base-en-v1.5", trust_remote_code=True).to(device)
 
-# GCP Configuration
-PROJECT_ID = ""
-REGION = ""
-DEPLOYED_INDEX_ID = ""
-DATASET_ID = ""
-TABLE_ID = ""
-ENDPOINT_ID = ""
-INDEX_ENDPOINT_NAME = f"projects/{PROJECT_ID}/locations/{REGION}/indexEndpoints/{ENDPOINT_ID}"
+# Import credentials
+from creds import (
+    PROJECT_ID,
+    REGION,
+    INDEX_ENDPOINT_NAME,
+    DEPLOYED_INDEX_ID,
+    DATASET_ID,
+    TABLE_ID,
+)
 
 # Initialize Vertex AI client globally
 aiplatform.init(project=PROJECT_ID, location=REGION)
