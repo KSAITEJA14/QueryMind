@@ -2,7 +2,12 @@
 
 QueryMind is a semantic search application designed to retrieve and rank research papers from the Arxiv dataset based on user queries. The system uses **Google Cloud Platform** services like Vertex AI, BigQuery, and Cloud Storage to handle embeddings, metadata, and search efficiently.
 
+
 ---
+
+
+https://github.com/user-attachments/assets/a0123eb1-636e-41f5-8171-bd7461366a25
+
 
 ## Features
 - **Vector Similarity Search**: Uses Vertex AI Matching Engine to find the top-k nearest neighbors in the embedding space.
